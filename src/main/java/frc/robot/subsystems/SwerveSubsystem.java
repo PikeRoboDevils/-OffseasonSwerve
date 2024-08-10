@@ -261,7 +261,7 @@ public class SwerveSubsystem extends SubsystemBase
                                                                       headingX.getAsDouble(),
                                                                       headingY.getAsDouble(),
                                                                       swerveDrive.getOdometryHeading().getRadians(),
-                                                                      .5));
+                                                                      swerveDrive.getMaximumVelocity()));
     });
   }
 
