@@ -16,7 +16,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AbsoluteDriveAdv;
-import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Swerve.SwerveIO;
+import frc.robot.subsystems.Swerve.SwerveSubsystem;
 import java.io.File;
 
 /**
@@ -30,8 +31,9 @@ public class RobotContainer
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                         "neo"));
+  private final SwerveSubsystem drivebase = new SwerveSubsystem(
+      new SwerveIO(
+        new File(Filesystem.getDeployDirectory(),"neo")));
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -126,7 +128,7 @@ public class RobotContainer
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
+    return drivebase.getAutonomousCommand("AHH");
   }
 
   public void setDriveMode()
