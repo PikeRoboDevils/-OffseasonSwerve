@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
@@ -19,17 +22,42 @@ import swervelib.math.Matter;
  */
 public final class Constants
 {
+  public static final Mode currentMode = Mode.REAL;
 
+  public static enum Mode {
+    /** Running on a real robot. */
+    REAL,
+
+    /** Running a physics simulator. */
+    SIM,
+
+    /** Replaying from a log file. */
+    REPLAY
+  }
+  
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(2); // change back to 2 for irl 
+  public static final double MAX_SPEED  = Units.feetToMeters(16); // change back to 2 for irl 
       // Maximum speed of the robot in meters per second, used to limit acceleration.
   public static final class AutonConstants
   {
-
+    
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(0.7, 0, 0);
     public static final PIDConstants ANGLE_PID       = new PIDConstants(0.4, 0, 0.01);
+
+    public static final HolonomicPathFollowerConfig config = new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                                         AutonConstants.TRANSLATION_PID,
+                                         // Translation PID constants
+                                         AutonConstants.ANGLE_PID,
+                                         // Rotation PID constants
+                                         4.5,
+                                         // TODO: Max module speed, in m/s Drive base radius from center of robot to the farthest wheel in meters
+                                         14.5,
+                                         // Drive base radius in meters. Distance from robot center to furthest module.
+                                         new ReplanningConfig()
+                                         // Default path replanning config. See the API for the options here
+        );
   }
 
   public static final class DrivebaseConstants
