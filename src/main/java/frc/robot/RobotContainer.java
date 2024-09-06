@@ -78,8 +78,8 @@ public class RobotContainer
     // left stick controls translation
     // right stick controls the angular velocity of the robot
     Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
+        () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_X_DEADBAND),
         () -> driverXbox.getRightX() * 0.5);
 
         //SIM COMMANDS
@@ -96,7 +96,7 @@ public class RobotContainer
     // used to be driveFieldOrientedAnglularVelocity for both changed for sim + its reasonable 
     //if is not? theres is robot.isreal
     drivebase.setDefaultCommand(
-        RobotBase.isReal() ? driveFieldOrientedDirectAngle : closedAbsoluteDriveAdv ); 
+        RobotBase.isReal() ? closedAbsoluteDriveAdv : closedAbsoluteDriveAdv ); 
   }
 
   /**

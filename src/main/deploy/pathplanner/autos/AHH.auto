@@ -14,7 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2note get"
+            "pathName": "New Path"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "strafe next note"
           }
         }
       ]
