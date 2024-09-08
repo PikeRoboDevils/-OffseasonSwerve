@@ -96,7 +96,7 @@ public class RobotContainer
     // used to be driveFieldOrientedAnglularVelocity for both changed for sim + its reasonable 
     //if is not? theres is robot.isreal
     drivebase.setDefaultCommand(
-        RobotBase.isReal() ? closedAbsoluteDriveAdv : closedAbsoluteDriveAdv ); 
+       closedAbsoluteDriveAdv ); 
   }
 
   /**
