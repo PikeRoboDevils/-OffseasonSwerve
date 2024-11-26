@@ -13,9 +13,10 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Robot;
+import frc.robot.Constants.PoseCameraConstants;
+
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -366,33 +367,23 @@ public class SWERVEVision
    */
   enum Cameras
   {
-    /**
-     * Left Camera
-     */
-    LEFT_CAM("left",
-             new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
-             new Translation3d(Units.inchesToMeters(12.056),
-                               Units.inchesToMeters(10.981),
-                               Units.inchesToMeters(8.44)),
-             VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
-    /**
-     * Right Camera
-     */
-    RIGHT_CAM("right",
-              new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(-30)),
-              new Translation3d(Units.inchesToMeters(12.056),
-                                Units.inchesToMeters(-10.981),
-                                Units.inchesToMeters(8.44)),
-              VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
-    /**
-     * Center Camera
-     */
-    CENTER_CAM("center",
-               new Rotation3d(0, Units.degreesToRadians(18), 0),
-               new Translation3d(Units.inchesToMeters(-4.628),
-                                 Units.inchesToMeters(-10.687),
-                                 Units.inchesToMeters(16.129)),
-               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1));
+    CAM_1(PoseCameraConstants.CAM1N,
+          PoseCameraConstants.CAM1R,
+          PoseCameraConstants.CAM1T,
+               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
+    CAM_2(PoseCameraConstants.CAM2N,
+          PoseCameraConstants.CAM2R,
+          PoseCameraConstants.CAM2T,
+               VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),  ;
+    // CAM_3("CAM3",
+    //            CameraConstants.CAM1R,
+    //            CameraConstants.CAM1T,
+    //            VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
+    // CAM_4("CAM4",
+    //            CameraConstants.CAM1R,
+    //            CameraConstants.CAM1T,
+    //            VecBuilder.fill(4, 4, 8), VecBuilder.fill(0.5, 0.5, 1)),
+    //            ;
 
     /**
      * Latency alert to use when high latency is detected.

@@ -8,9 +8,11 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean constants. This
@@ -22,7 +24,7 @@ import swervelib.math.Matter;
  */
 public final class Constants
 {
-  public static final Mode currentMode = Mode.REAL;
+  public static final Mode currentMode = Mode.SIM;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -46,10 +48,10 @@ public final class Constants
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(0.7, 0, 0);
     public static final PIDConstants ANGLE_PID       = new PIDConstants(0.4, 0, 0.01);
 
-    public static final HolonomicPathFollowerConfig config = new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                                         AutonConstants.TRANSLATION_PID,
+    public static final HolonomicPathFollowerConfig config = new HolonomicPathFollowerConfig(
+                                        TRANSLATION_PID,
                                          // Translation PID constants
-                                         AutonConstants.ANGLE_PID,
+                                         ANGLE_PID,
                                          // Rotation PID constants
                                          4.5,
                                          // TODO: Max module speed, in m/s Drive base radius from center of robot to the farthest wheel in meters
@@ -75,5 +77,25 @@ public final class Constants
     public static final double LEFT_Y_DEADBAND  = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
+  }
+
+
+//For Easier camera setup to be used with already made vision examples  
+  public static class PoseCameraConstants
+  {
+    public static final String CAM1N = "W";
+   public static final Rotation3d CAM1R = new Rotation3d(0, 0, 0);
+   public static final Translation3d CAM1T = new Translation3d(Units.inchesToMeters(-4.628),
+                      Units.inchesToMeters(-10.687),
+                      Units.inchesToMeters(16.129));
+
+    public static final String CAM2N = "W";
+   public static final Rotation3d CAM2R = new Rotation3d(0, 0, 0);
+   public static final Translation3d CAM2T = new Translation3d(Units.inchesToMeters(-4.628),
+                      Units.inchesToMeters(-10.687),
+                      Units.inchesToMeters(16.129));
+
+    //it goes up to 4 but it is commented out in SwerveVision
+
   }
 }

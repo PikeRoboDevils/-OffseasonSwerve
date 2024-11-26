@@ -26,7 +26,7 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveIO {
         SwerveDrive swerveDrive;
         SwerveController controller;
-        SWERVEVision vision;
+
     public SwerveIO(File directory) {
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;

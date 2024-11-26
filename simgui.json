@@ -27,7 +27,8 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Field": "Field2d",
-      "/SmartDashboard/Pigeon 2 (v6) [11]": "Gyro"
+      "/SmartDashboard/Pigeon 2 (v6) [11]": "Gyro",
+      "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d"
     }
   },
   "NetworkTables Info": {

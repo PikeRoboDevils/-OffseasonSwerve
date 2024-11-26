@@ -8,8 +8,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -21,8 +19,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
@@ -30,6 +28,10 @@ import frc.robot.Constants;
 import frc.robot.Constants.AutonConstants;
 
 import java.util.function.DoubleSupplier;
+
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
+
 // import org.photonvision.PhotonCamera;
 // import org.photonvision.targeting.PhotonPipelineResult;
 import swervelib.SwerveController;
@@ -47,11 +49,18 @@ public class SwerveSubsystem extends SubsystemBase
    * Swerve drive object.
    */
   private final SwerveIO io;
+
+  private SWERVEVision vision;
       
   /**
    * AprilTag field layout.
    */
   private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+
+  /**
+   * Enable vision odometry updates while driving.
+   */
+  private boolean visionEnabled = false;
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -79,6 +88,13 @@ public class SwerveSubsystem extends SubsystemBase
 
     io.swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
     io.swerveDrive.setCosineCompensator(false);//!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+    if (visionEnabled)
+    {
+      setupPhotonVision();
+      // Stop the odometry thread if we are using vision that way we can synchronize updates better.
+      io.swerveDrive.stopOdometryThread();
+    }
+
     setupPathPlanner();
   }
 
@@ -103,6 +119,15 @@ public class SwerveSubsystem extends SubsystemBase
         this // Reference to this subsystem to set requirements
                                   );
   }
+/**
+ * Setup the photon vision class.
+ */
+public void setupPhotonVision()
+{
+  vision = new SWERVEVision(io.swerveDrive::getPose, io.swerveDrive.field);
+}
+  
+
 
   /**
    * Get the distance to the speaker.
@@ -157,20 +182,20 @@ public class SwerveSubsystem extends SubsystemBase
    * @param camera {@link PhotonCamera} to communicate with.
    * @return A {@link Command} which will run the alignment.
    */
-//   public Command aimAtTarget(UsbCamera camera)
-//   {
+  public Command aimAtTarget(PhotonCamera camera)
+  {
 
-//     // return run(() -> {
-//     //   PhotonPipelineResult result = camera.getLatestResult();
-//     //   if (result.hasTargets())
-//     //   {
-//     //     drive(getTargetSpeeds(0,
-//     //                           0,
-//     //                           Rotation2d.fromDegrees(result.getBestTarget()
-//     //                                                        .getYaw()))); // Not sure if this will work, more math may be required.
-//     //   }
-//     // });
-//   }
+    return run(() -> {
+      PhotonPipelineResult result = camera.getLatestResult();
+      if (result.hasTargets())
+      {
+        drive(getTargetSpeeds(0,
+                              0,
+                              Rotation2d.fromDegrees(result.getBestTarget()
+                                                           .getYaw()))); // Not sure if this will work, more math may be required.
+      }
+    });
+  }
 
   /**
    * Get the path follower with events.
@@ -347,6 +372,12 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
+    // When vision is enabled we must manually update odometry in SwerveDrive
+    if (visionEnabled)
+    {
+      io.swerveDrive.updateOdometry();
+      vision.updatePoseEstimation(io.swerveDrive);
+    }
   }
 
   @Override
@@ -562,30 +593,12 @@ public class SwerveSubsystem extends SubsystemBase
   {
     return io.swerveDrive.getPitch();
   }
-
-  /**
-   * Add a fake vision reading for testing purposes.
-   */
-  public void addFakeVisionReading()
-  {
-    io.swerveDrive.addVisionMeasurement(new Pose2d(3, 3, Rotation2d.fromDegrees(65)), Timer.getFPGATimestamp());
-  }
-
-/**
-   * Setup the photon vision class.
-   */
-  public void setupPhotonVision()
-  {
-    io.vision = new SWERVEVision(io.swerveDrive::getPose, io.swerveDrive.field);
-    io.vision.updatePoseEstimation(io.swerveDrive);
-  }
-
   /**
    * Update the pose estimation with vision data.
    */
   public void updatePoseWithVision()
   {
-    io.vision.updatePoseEstimation(io.swerveDrive);
+    vision.updatePoseEstimation(io.swerveDrive);
   }
 
   /**
@@ -595,7 +608,15 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Pose2d getVisionPose()
   {
-    io.vision.updatePoseEstimation(io.swerveDrive);
+    vision.updatePoseEstimation(io.swerveDrive);
     return io.swerveDrive.getPose();
   }
+
+  /**
+ * Add a fake vision reading for testing purposes.
+ */
+public void addFakeVisionReading()
+{
+  io.swerveDrive.addVisionMeasurement(new Pose2d(3, 3, Rotation2d.fromDegrees(65)), Timer.getFPGATimestamp());
+}
 }
