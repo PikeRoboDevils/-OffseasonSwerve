@@ -15,6 +15,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.Robot;
+import frc.robot.Constants.Mode;
 import frc.robot.Constants.PoseCameraConstants;
 
 import java.awt.Desktop;
@@ -35,6 +36,9 @@ import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import com.google.flatbuffers.Constants;
+
 import swervelib.SwerveDrive;
 import swervelib.telemetry.Alert;
 import swervelib.telemetry.Alert.AlertType;
@@ -44,6 +48,11 @@ import swervelib.telemetry.Alert.AlertType;
  * Example PhotonVision class to aid in the pursuit of accurate odometry. Taken from
  * https://gitlab.com/ironclad_code/ironclad-2024/-/blob/master/src/main/java/frc/robot/vision/Vision.java?ref_type=heads
  */
+
+
+// THERE IS A VISIONENABLED VARIABLE IN SWERVE SUBSYTEM I PROMISE THIS FILE SHOULD NEVER CHANGE
+// THERE IS A VISIONENABLED VARIABLE IN SWERVE SUBSYTEM I PROMISE THIS FILE SHOULD NEVER CHANGE
+// THERE IS A VISIONENABLED VARIABLE IN SWERVE SUBSYTEM I PROMISE THIS FILE SHOULD NEVER CHANGE
 public class SWERVEVision
 {
 

@@ -1,8 +1,8 @@
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2024.3.2"
-    id "com.peterabeles.gversion" version "1.10"
-    id 'com.diffplug.spotless' version '6.20.0'
+    // id "com.peterabeles.gversion" version "1.10"
+   // id 'com.diffplug.spotless' version '6.20.0' // i like my weird code...
 }
 
 java {
@@ -129,55 +129,55 @@ dependencies {
     annotationProcessor "org.littletonrobotics.akit.junction:junction-autolog:$akitJson.version"
 }
 
-project.compileJava.dependsOn(createVersionFile)
-gversion {
-  srcDir       = "src/main/java/"
-  classPackage = "frc.robot"
-  className    = "BUILD"
-  dateFormat   = "yyyy-MM-dd HH:mm:ss z"
-  timeZone     = "America/New_York" // Use preferred time zone
-  indent       = "  "
-}
+// project.compileJava.dependsOn(createVersionFile) doesnt work???
+// gversion {
+//   srcDir       = "src/main/java/"
+//   classPackage = "frc.robot"
+//   className    = "BUILD"
+//   dateFormat   = "yyyy-MM-dd HH:mm:ss z"
+//   timeZone     = "America/New_York" // Use preferred time zone
+//   indent       = "  "
+// }
 
-spotless {
-    java {
-        target fileTree('.') {
-            include '**/*.java'
-            exclude '**/build/**', '**/build-*/**', '**/BUILD.java'
-        }
-        toggleOffOn()
-        googleJavaFormat()
-        removeUnusedImports()
-        trimTrailingWhitespace()
-        endWithNewline()
-    }
-    groovyGradle {
-        target fileTree('.') {
-            include '**/*.gradle'
-            exclude '**/build/**', '**/build-*/**'
-        }
-        greclipse()
-        indentWithSpaces(4)
-        trimTrailingWhitespace()
-        endWithNewline()
-    }
-    format 'xml', {
-        target fileTree('.') {
-            include '**/*.xml'
-            exclude '**/build/**', '**/build-*/**'
-        }
-        eclipseWtp('xml')
-        trimTrailingWhitespace()
-        indentWithSpaces(2)
-        endWithNewline()
-    }
-    format 'misc', {
-        target fileTree('.') {
-            include '**/*.md', '**/.gitignore'
-            exclude '**/build/**', '**/build-*/**'
-        }
-        trimTrailingWhitespace()
-        indentWithSpaces(2)
-        endWithNewline()
-    }
-}
+// spotless {
+//     java {
+//         target fileTree('.') {
+//             include '**/*.java'
+//             exclude '**/build/**', '**/build-*/**', '**/BUILD.java'
+//         }
+//         toggleOffOn()
+//         googleJavaFormat()
+//         removeUnusedImports()
+//         trimTrailingWhitespace()
+//         endWithNewline()
+//     }
+//     groovyGradle {
+//         target fileTree('.') {
+//             include '**/*.gradle'
+//             exclude '**/build/**', '**/build-*/**'
+//         }
+//         greclipse()
+//         indentWithSpaces(4)
+//         trimTrailingWhitespace()
+//         endWithNewline()
+//     }
+//     format 'xml', {
+//         target fileTree('.') {
+//             include '**/*.xml'
+//             exclude '**/build/**', '**/build-*/**'
+//         }
+//         eclipseWtp('xml')
+//         trimTrailingWhitespace()
+//         indentWithSpaces(2)
+//         endWithNewline()
+//     }
+//     format 'misc', {
+//         target fileTree('.') {
+//             include '**/*.md', '**/.gitignore'
+//             exclude '**/build/**', '**/build-*/**'
+//         }
+//         trimTrailingWhitespace()
+//         indentWithSpaces(2)
+//         endWithNewline()
+//     }
+

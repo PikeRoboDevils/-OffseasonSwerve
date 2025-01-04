@@ -24,7 +24,7 @@ import swervelib.math.Matter;
  */
 public final class Constants
 {
-  public static final Mode currentMode = Mode.SIM;
+  public static final Mode currentMode = Mode.REAL;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -89,7 +89,7 @@ public final class Constants
                       Units.inchesToMeters(-10.687),
                       Units.inchesToMeters(16.129));
 
-    public static final String CAM2N = "W";
+    public static final String CAM2N = "h";
    public static final Rotation3d CAM2R = new Rotation3d(0, 0, 0);
    public static final Translation3d CAM2T = new Translation3d(Units.inchesToMeters(-4.628),
                       Units.inchesToMeters(-10.687),

@@ -60,7 +60,7 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * Enable vision odometry updates while driving.
    */
-  private boolean visionEnabled = false;
+  private boolean visionEnabled = true;
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -412,9 +412,16 @@ public void setupPhotonVision()
    *
    * @return The robot's pose
    */
-  public Pose2d getPose()
+  public Pose2d getPose() 
+  {
+    return !visionEnabled ? io.swerveDrive.getPose() : getVisionPose();
+    // return io.swerveDrive.getPose();
+    // Made it simple, can still use getMesPose for the normal pose
+  }
+  public Pose2d getMesPose() 
   {
     return io.swerveDrive.getPose();
+    // use getPose() for the default pose
   }
 
   /**
